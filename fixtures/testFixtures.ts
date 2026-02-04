@@ -63,7 +63,8 @@ export const test = base.extend<{
     };
 
     // Enable auto-highlighting on all locator interactions
-    const { createhighLightPage } = require('@Helper/highLight');
+    // const { createhighLightPage } = require('@Helper/highLight');
+    const { createhighLightPage } = require('../helpers/highlight');
     createhighLightPage(enhancedPage, { enabled: true });
 
     await use(enhancedPage);
