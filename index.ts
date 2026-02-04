@@ -44,5 +44,9 @@ _.test.afterEach(async ({ }, testInfo) => {
     } else {
         console.log(`\n⚠ ${status?.toUpperCase()}: ${title}\n`);
     }
+
+    
+    console.log('BASE_URL:', process.env.BASE_URL);
+    console.log('USERNAME:', process.env.AUTH_USERNAME);
     
 });

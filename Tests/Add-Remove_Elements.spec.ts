@@ -12,8 +12,4 @@ _.test('AddRemove_Element', async ({ page }) => {
     await addRemoveEle.ClickAddElementButton();
     await addRemoveEle.ClickDeleteButton();
 
-
-    console.log('BASE_URL:', process.env.BASE_URL);
-    console.log('USERNAME:', process.env.AUTH_USERNAME);
-
 });
