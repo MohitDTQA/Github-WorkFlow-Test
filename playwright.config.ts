@@ -74,7 +74,7 @@ const config: PlaywrightTestConfig = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.PARALLEL_TESTS ? Number(process.env.PARALLEL_TESTS) : undefined,
-  reporter: 'html',
+  reporter: [['html', { open: 'never' }]],
 
   use: {
     actionTimeout: parseInt(process.env.ACTION_TIMEOUT!),
