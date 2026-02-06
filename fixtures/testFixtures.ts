@@ -11,11 +11,11 @@ export const test = base.extend<{
     const testName = testInfo.title;
     const runDateTime = _.getFormattedDateTime();
     const { videoDir, screenshotDir } = _.createArtifactDirectories(
-      testName, 
-      browserName, 
+      testName,
+      browserName,
       runDateTime
     );
-    
+
     // await use({ videoDir, screenshotDir, runDateTime });
     await use({ videoDir, screenshotDir, runDateTime });
   },
@@ -27,7 +27,7 @@ export const test = base.extend<{
       dir: testDirectories.videoDir,
       size: { width: 1920, height: 1080 }
     } : undefined;
-    
+
     const context = await browser.newContext({
       recordVideo: recordVideo,
       // viewport: {width: 1920, height: 1080}
@@ -37,8 +37,8 @@ export const test = base.extend<{
 
     // Close context - this automatically finalizes and saves all videos
     await context.close();
-    
-    console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n`: `Video was not Recorded`);
+
+    console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n` : `Video was not Recorded`);
   },
 
   // Fixture: Create enhanced page with custom functionality
@@ -58,13 +58,12 @@ export const test = base.extend<{
 
     // Add screenshot helper method to page
     const enhancedPage = page as _.EnhancedPage;
-    enhancedPage.takeScreenshot = async (customName?: string) => {
-      return await _.takeScreenshot(page, testDirectories.screenshotDir, customName);
+    enhancedPage.captureScreenshot = async (customName?: string) => {
+      return await _.captureScreenshot(page, testDirectories.screenshotDir, customName);
     };
 
     // Enable auto-highlighting on all locator interactions
-    // const { createhighLightPage } = require('@Helper/highLight');
-    const { createhighLightPage } = require('../helpers/highlight');
+    const { createhighLightPage } = require('@Helper/highlight');
     createhighLightPage(enhancedPage, { enabled: true });
 
     await use(enhancedPage);

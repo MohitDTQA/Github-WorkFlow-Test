@@ -16,7 +16,7 @@ export type { EnhancedPage, TestDirectories } from '@Types/testTypes';
 export { getFormattedDateTime, getDisplayDateTime } from '@Utils/dateTime';
 export { sanitizeTestName } from '@Utils/stringUtils';
 export { createArtifactDirectories } from '@Utils/directoryUtils';
-export { takeScreenshot } from '@Helper/screenShots';
+export { captureScreenshot } from '@Helper/screenShots';
 export { showIntroSplash } from '@Helper/splashScreen';
 export { highlight, createhighLightLocator, createhighLightPage } from './helpers/highlight';
 export { BasePage } from '@BasePage';
@@ -38,15 +38,11 @@ _.test.afterEach(async ({ }, testInfo) => {
     const status = testInfo.status;
 
     if (status === 'passed') {
-        console.log(`\n${GREEN}✔ PASSED: ${title}${RESET}\n`);
+        console.log(`${GREEN}✔ PASSED: ${title}${RESET}`);
     } else if (status === 'failed') {
-        console.log(`\n${RED}✖ FAILED: ${title}${RESET}\n`);
+        console.log(`${RED}✖ FAILED: ${title}${RESET}`);
     } else {
-        console.log(`\n⚠ ${status?.toUpperCase()}: ${title}\n`);
+        console.log(`⚠ ${status?.toUpperCase()}: ${title}`);
     }
 
-    
-    console.log('BASE_URL:', process.env.BASE_URL);
-    console.log('USERNAME:', process.env.AUTH_USERNAME);
-    
 });

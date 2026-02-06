@@ -25,7 +25,7 @@ export class AddRemoveEle {
         }
     }
 
-    async ClickDeleteButton(){
+    async ClickDeleteButton() {
         await this.DeleteButton.click();
     }
 }

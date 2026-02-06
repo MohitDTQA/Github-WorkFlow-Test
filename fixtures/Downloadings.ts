@@ -14,7 +14,7 @@ export class Downloadings {
     const download = await this.downloadPromise;
 
     if (process.env.DOWNLOAD_URL !== 'No') {
-      const folder = process.env.DOWNLOAD_URL ?? "./Downloaded files";
+      const folder = process.env.DOWNLOAD_URL ?? "./DownloadedFiles";
       const filePath = _.path.join(folder, download.suggestedFilename());
       await download.saveAs(filePath);
     }

@@ -2,7 +2,7 @@ import * as _ from '@Index';
 
 // Custom page type with screenshot helper
 export type EnhancedPage = _.Page & {
-  takeScreenshot: (customName?: string) => Promise<string | null>;
+  captureScreenshot: (customName?: string) => Promise<string | null>;
 };
 
 // Shared test directories fixture

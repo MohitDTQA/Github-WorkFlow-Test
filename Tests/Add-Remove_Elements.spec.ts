@@ -11,5 +11,4 @@ _.test('AddRemove_Element', async ({ page }) => {
     await addRemoveEle.ClickAddRemoveEleLink();
     await addRemoveEle.ClickAddElementButton();
     await addRemoveEle.ClickDeleteButton();
-
 });
