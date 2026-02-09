@@ -21,17 +21,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout repository
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      # 3️⃣ Install deps
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
@@ -43,91 +43,99 @@ jobs:
       - name: Install Allure CLI
         run: npm install -D allure-commandline
 
-      # 6️⃣ Run tests
+      # 6️⃣ Run Playwright tests
       - name: Run Playwright tests
         run: npx playwright test
         continue-on-error: true
 
-      # 7️⃣ Generate Allure report
+      # 7️⃣ Generate Allure HTML report
       - name: Generate Allure report
         if: always()
         run: npx allure-commandline generate allure-results --clean -o allure-report
 
-      # 8️⃣ Download existing Pages content (if any)
-      - name: Download existing Pages
+      # 8️⃣ Upload Playwright report (artifact)
+      - name: Upload Playwright report artifact
         if: always()
-        uses: actions/download-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
-          name: github-pages
-          path: old-pages
-        continue-on-error: true
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
-      # 9️⃣ Prepare Pages with history
-      - name: Prepare Pages with history
+      # 9️⃣ Upload Allure report (artifact)
+      - name: Upload Allure report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+
+      # 🔟 Prepare GitHub Pages content (Landing Page Hub)
+      - name: Prepare Pages content
         if: always()
         run: |
-          TIMESTAMP=$(date +"%Y-%m-%d_%H-%M")
+          mkdir -p pages/playwright
+          mkdir -p pages/allure
 
-          mkdir -p pages/reports
+          # Copy reports
+          cp -r playwright-report/* pages/playwright/
+          cp -r allure-report/* pages/allure/
 
-          # Restore previous reports if they exist
-          if [ -d "old-pages" ]; then
-            cp -r old-pages/* pages/ || true
-          fi
-
-          # Create new report folder
-          mkdir -p pages/reports/$TIMESTAMP/allure
-          mkdir -p pages/reports/$TIMESTAMP/playwright
-
-          cp -r allure-report/* pages/reports/$TIMESTAMP/allure/
-          cp -r playwright-report/* pages/reports/$TIMESTAMP/playwright/
-
-          # Keep only last 10 reports
-          cd pages/reports
-          ls -1dt */ | tail -n +11 | xargs rm -rf || true
-          cd -
-
-          # Rebuild landing page
+          # Create landing page (Reports Home)
           cat <<EOF > pages/index.html
           <!DOCTYPE html>
           <html>
             <head>
               <meta charset="UTF-8" />
-              <title>Test Reports History</title>
+              <title>Test Reports</title>
               <style>
-                body { font-family: Arial, sans-serif; padding: 40px; }
-                h1 { margin-bottom: 10px; }
-                ul { margin-top: 20px; }
-                li { margin: 10px 0; }
-                a { text-decoration: none; color: #0366d6; }
-                a:hover { text-decoration: underline; }
-                .date { font-weight: bold; }
+                body {
+                  font-family: Arial, sans-serif;
+                  padding: 40px;
+                }
+                h1 {
+                  margin-bottom: 10px;
+                }
+                ul {
+                  margin-top: 20px;
+                }
+                li {
+                  margin: 10px 0;
+                }
+                a {
+                  font-size: 18px;
+                  text-decoration: none;
+                  color: #0366d6;
+                }
+                a:hover {
+                  text-decoration: underline;
+                }
               </style>
             </head>
             <body>
-              <h1>Test Reports (Last 10 Runs)</h1>
+              <h1>Test Reports</h1>
+              <p>Select a report:</p>
               <ul>
-          EOF
-
-          for d in $(ls -1dt pages/reports/*/); do
-            RUN=$(basename $d)
-            echo "<li><span class='date'>$RUN</span> — <a href='./reports/$RUN/allure/'>Allure</a> | <a href='./reports/$RUN/playwright/'>Playwright</a></li>" >> pages/index.html
-          done
-
-          cat <<EOF >> pages/index.html
+                <li>
+                  <a href="./allure/">Allure Report (trends, history, API details)</a>
+                </li>
+                <li>
+                  <a href="./playwright/">Playwright HTML Report (debugging, traces)</a>
+                </li>
               </ul>
             </body>
           </html>
           EOF
 
-      # 🔟 Upload Pages artifact (ONLY ONCE)
+      # 1️⃣1️⃣ Upload Pages artifact (ONLY ONCE)
       - name: Upload Pages artifact
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: pages/
 
-      # 1️⃣1️⃣ Deploy Pages
+      # 1️⃣2️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         if: always()
         id: deployment
