@@ -6,44 +6,53 @@ dotenv.config({ path: 'config.env' });
 
 // 1. Define all available browser projects
 const browserProjects: Record<string, any> = {
-  chrome: { name: 'Chrome', use: {
-    viewport: null,
-    launchOptions: {
-      slowMo: Number(process.env.SLOW_MOTION) || 0,
-      headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
-      args: [
-        '--start-maximized'
-      ],
-    },
-  }},
-    msedge: { name: 'Microsoft Edge', use: { 
-    viewport: null,
-    launchOptions: {
-      slowMo: Number(process.env.SLOW_MOTION) || 0,
-      headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
-      args: [
-        '--start-maximized'
-      ],
-      channel: 'msedge'
-    },
-  }},
+  chrome: {
+    name: 'Chrome', use: {
+      viewport: null,
+      launchOptions: {
+        slowMo: Number(process.env.SLOW_MOTION) || 0,
+        headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
+        args: [
+          '--start-maximized'
+        ],
+      },
+    }
+  },
+  msedge: {
+    name: 'Microsoft Edge', use: {
+      viewport: null,
+      launchOptions: {
+        slowMo: Number(process.env.SLOW_MOTION) || 0,
+        headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
+        args: [
+          '--start-maximized'
+        ],
+        channel: 'msedge'
+      },
+    }
+  },
   firefox: { name: 'Firefox', use: { ...devices['Desktop Firefox'], } },
-  webkit: { name: 'WebKit', use: { ...devices['Desktop Safari'],
-    args: [
-      '--start-maximized'
-    ]
-   } },
-     googlechrome: { name: 'Google Chrome', use: { 
-    viewport: null,
-    launchOptions: {
-      slowMo: Number(process.env.SLOW_MOTION) || 0,
-      headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
+  webkit: {
+    name: 'WebKit', use: {
+      ...devices['Desktop Safari'],
       args: [
-        '--start-maximized',
-      ],
-      channel: 'chrome'
-    },
-  }},
+        '--start-maximized'
+      ]
+    }
+  },
+  googlechrome: {
+    name: 'Google Chrome', use: {
+      viewport: null,
+      launchOptions: {
+        slowMo: Number(process.env.SLOW_MOTION) || 0,
+        headless: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER !== 'true' : true,
+        args: [
+          '--start-maximized',
+        ],
+        channel: 'chrome'
+      },
+    }
+  },
   mobilechrome: { name: 'Mobile Chrome', use: { ...devices['Pixel 5'] } },
   mobilesafari: { name: 'Mobile Safari', use: { ...devices['iPhone 12'] } },
 };
@@ -74,11 +83,17 @@ const config: PlaywrightTestConfig = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.PARALLEL_TESTS ? Number(process.env.PARALLEL_TESTS) : undefined,
-  reporter: [['html', { open: 'never' }]],
+  // reporter: [['html', { open: 'never' }]],
+  reporter: [
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
+  ],
+
 
   use: {
     actionTimeout: parseInt(process.env.ACTION_TIMEOUT!),
     navigationTimeout: parseInt(process.env.NAVIGATION_TIMEOUT!),
+    screenshot: 'only-on-failure',
     trace: 'on',
     launchOptions: {
       slowMo: Number(process.env.SLOW_MOTION) || 0,

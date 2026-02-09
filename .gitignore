@@ -9,3 +9,5 @@ node_modules/
 !creds.env
 artifacts/
 /auth.json
+/allure-report/
+/allure-results/
