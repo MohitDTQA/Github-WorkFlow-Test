@@ -11,4 +11,8 @@ export class BasePage {
         await this.page.goto(process.env.BASE_URL!);
     }
 
+    async goToApiUrl(){
+        await this.page.goto(process.env.API_URL!);
+    }
+
 }

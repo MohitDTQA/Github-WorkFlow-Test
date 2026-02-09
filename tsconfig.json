@@ -19,6 +19,7 @@
       "@Utils/*": ["utils/*"],
       "@Fixtures/*": ["fixtures/*"],
       "@TestData/*": ["test-data/*"],
+      "@api_Helpers/*": ["API_Helpers/*"],
     },
 
     "types": ["node", "@playwright/test"]

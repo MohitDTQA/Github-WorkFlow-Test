@@ -69,7 +69,7 @@ if (selectedProjects.length === 0) {
 // 6. Playwright config
 const config: PlaywrightTestConfig = defineConfig({
   timeout: parseInt(process.env.TIMEOUT!),
-  testDir: './Tests',
+  testDir: `./${process.env.TEST_DIRECTORY}`,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

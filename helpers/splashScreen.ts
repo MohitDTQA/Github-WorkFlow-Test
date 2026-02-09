@@ -10,12 +10,18 @@ export const showIntroSplash = async (
 ): Promise<void> => {
   await page.goto('about:blank');
 
-  await page.evaluate(({ testName, browserName, dateTime }) => {
+  const durationMs = process.env.SPLASH_DURATION
+    ? parseInt(process.env.SPLASH_DURATION, 10)
+    : 500;
+  const durationSeconds = Math.max(0, Math.round(durationMs / 1000));
+
+  await page.evaluate(({ testName, browserName, dateTime, durationSeconds }) => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
     document.body.style.overflow = 'hidden';
 
     const splash = document.createElement('div');
+    splash.id = 'intro-splash';
     splash.style.cssText = `
       position: fixed;
       top: 0;
@@ -46,12 +52,14 @@ export const showIntroSplash = async (
     `;
 
     document.body.appendChild(splash);
-  }, { testName, browserName, dateTime });
+  }, { testName, browserName, dateTime, durationSeconds });
 
   // Wait for splash screen to be visible
-  await page.waitForTimeout(parseInt(process.env.SPLASH_DURATION!));
+  if (durationMs > 0) {
+    await page.waitForTimeout(durationMs);
+  }
 
-  // ✅ Remove splash after duration
+  // ? Remove splash after duration
   await page.evaluate(() => {
     document.getElementById('intro-splash')?.remove();
   });
