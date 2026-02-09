@@ -12,13 +12,13 @@ _.test.describe('POST - /auth/signup - @api', async () => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.userEmail,
-                phone: '1234567878',
+                phone: user.mobileNumber,
                 birthDate: '01-01-2000',
                 role: 'customer'
             });
 
             _.CheckStatus;
-            const body = await _.CheckStatus.ok(response);
+            const body = await _.CheckStatus.ok(response, 201);
             console.log(body);
         }
 
