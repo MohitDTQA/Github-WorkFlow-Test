@@ -53,7 +53,16 @@ jobs:
         if: always()
         run: npx allure-commandline generate allure-results --clean -o allure-report
 
-      # 8️⃣ Upload Playwright report (artifact)
+      # 8️⃣ Upload Playwright runtime artifacts (screenshots, videos, traces)
+      - name: Upload Playwright runtime artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: test-results/
+          retention-days: 30
+
+      # 9️⃣ Upload Playwright HTML report
       - name: Upload Playwright report artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,7 +71,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      # 9️⃣ Upload Allure report (artifact)
+      # 🔟 Upload Allure report
       - name: Upload Allure report artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -71,18 +80,24 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      # 🔟 Prepare GitHub Pages content (Landing Page Hub)
+      # 1️⃣1️⃣ Prepare GitHub Pages content (Reports + Artifacts)
       - name: Prepare Pages content
         if: always()
         run: |
           mkdir -p pages/playwright
           mkdir -p pages/allure
+          mkdir -p pages/artifacts
 
           # Copy reports
           cp -r playwright-report/* pages/playwright/
           cp -r allure-report/* pages/allure/
 
-          # Create landing page (Reports Home)
+          # Copy runtime artifacts (screenshots, videos, traces)
+          if [ -d "test-results" ]; then
+            cp -r test-results/* pages/artifacts/
+          fi
+
+          # Create landing page
           cat <<EOF > pages/index.html
           <!DOCTYPE html>
           <html>
@@ -101,7 +116,7 @@ jobs:
                   margin-top: 20px;
                 }
                 li {
-                  margin: 10px 0;
+                  margin: 12px 0;
                 }
                 a {
                   font-size: 18px;
@@ -111,6 +126,9 @@ jobs:
                 a:hover {
                   text-decoration: underline;
                 }
+                small {
+                  color: #555;
+                }
               </style>
             </head>
             <body>
@@ -118,24 +136,30 @@ jobs:
               <p>Select a report:</p>
               <ul>
                 <li>
-                  <a href="./allure/">Allure Report (trends, history, API details)</a>
+                  <a href="./allure/">Allure Report</a>
+                  <small>– trends, history, API data</small>
                 </li>
                 <li>
-                  <a href="./playwright/">Playwright HTML Report (debugging, traces)</a>
+                  <a href="./playwright/">Playwright HTML Report</a>
+                  <small>– debugging, traces</small>
+                </li>
+                <li>
+                  <a href="./artifacts/">Runtime Artifacts</a>
+                  <small>– screenshots, videos, traces</small>
                 </li>
               </ul>
             </body>
           </html>
           EOF
 
-      # 1️⃣1️⃣ Upload Pages artifact (ONLY ONCE)
+      # 1️⃣2️⃣ Upload Pages artifact (ONLY ONCE)
       - name: Upload Pages artifact
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: pages/
 
-      # 1️⃣2️⃣ Deploy to GitHub Pages
+      # 1️⃣3️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         if: always()
         id: deployment
