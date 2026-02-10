@@ -1,4 +1,4 @@
-name: Playwright CI/CD
+# name: Playwright CI/CD
 
 on:
   push:
@@ -46,7 +46,6 @@ jobs:
       # 6️⃣ Run Playwright tests
       - name: Run Playwright tests
         run: xvfb-run -a npx playwright test
-        # run: npx playwright test
         continue-on-error: true
 
       # 7️⃣ Generate Allure HTML report
@@ -54,22 +53,23 @@ jobs:
         if: always()
         run: npx allure-commandline generate results_reports/allure-results --clean -o results_reports/allure-report
 
-      # 8️⃣ Upload Playwright runtime artifacts (screenshots, videos, traces)
-      - name: Upload Playwright runtime artifacts
+      # 8️⃣ Upload Playwright test-results artifacts
+      - name: Upload Playwright test-results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts
+          name: playwright-test-results
           path: results_reports/test-results/
           retention-days: 30
 
-      - name: Upload test artifacts
+      # 8️⃣b Upload custom artifacts (screenshots/videos)
+      - name: Upload custom artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts
+          name: custom-artifacts
           path: artifacts/
-
+          retention-days: 30
 
       # 9️⃣ Upload Playwright HTML report
       - name: Upload Playwright report artifact
