@@ -386,6 +386,8 @@
 
 # name: Playwright CI/CD
 
+# name: Playwright CI/CD
+
 on:
   push:
     branches: [ main, master ]
@@ -497,10 +499,10 @@ jobs:
             cp -r results_reports/test-results/* pages/artifacts/
           fi
 
-          # Copy HTML templates and scripts
-          cp html-templates/artifacts-index.html pages/artifacts/index.html
-          cp html-templates/generate-artifacts-list.sh pages/artifacts/generate-list.sh
-          cp html-templates/landing-page.html pages/index.html
+          # Copy HTML templates and scripts from .github/workflows/html-templates
+          cp .github/workflows/html-templates/artifacts-index.html pages/artifacts/index.html
+          cp .github/workflows/html-templates/generate-artifacts-list.sh pages/artifacts/generate-list.sh
+          cp .github/workflows/html-templates/landing-page.html pages/index.html
 
           # Generate artifacts list JSON
           chmod +x pages/artifacts/generate-list.sh
