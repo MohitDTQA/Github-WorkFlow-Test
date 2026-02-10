@@ -21,47 +21,27 @@ export const test = base.extend<{
   },
 
   // Fixture: Create browser context with video recording
-  // context: async ({ browser, testDirectories }, use, testInfo) => {
-  //   // Create context with conditional video recording based on RECORD_VIDEO env var
-  //   const recordVideo = process.env.RECORD_VIDEO === 'on' ? {
-  //     dir: testDirectories.videoDir,
-  //     size: { width: 1920, height: 1080 }
-  //   } : undefined;
+  context: async ({ browser, testDirectories }, use, testInfo) => {
+    // Create context with conditional video recording based on RECORD_VIDEO env var
+    const recordVideo = process.env.RECORD_VIDEO === 'on' ? {
+      dir: testDirectories.videoDir,
+      size: { width: 1920, height: 1080 }
+    } : undefined;
 
-  //   const isHeaded = process.env.OPEN_BROWSER === 'true';
-  //   const context = await browser.newContext({
-  //     recordVideo: recordVideo,
-  //     viewport: isHeaded ? null : { width: 1920, height: 1080 },
-  //     // viewport: {width: 1920, height: 1080}
-  //   });
+    const isHeaded = process.env.OPEN_BROWSER === 'true';
+    const context = await browser.newContext({
+      recordVideo: recordVideo,
+      viewport: isHeaded ? null : { width: 1920, height: 1080 },
+      // viewport: {width: 1920, height: 1080}
+    });
 
-  //   await use(context);
+    await use(context);
 
-  //   // Close context - this automatically finalizes and saves all videos
-  //   await context.close();
+    // Close context - this automatically finalizes and saves all videos
+    await context.close();
 
-  //   // console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n` : `Video was not Recorded`);
-  // },
-
-  context: async ({ browser, testDirectories }, use) => {
-  const recordVideoEnabled =
-    ['true', 'on', '1'].includes(process.env.RECORD_VIDEO?.toLowerCase() ?? '');
-
-  const context = await browser.newContext({
-    viewport: recordVideoEnabled ? { width: 1920, height: 1080 } : null,
-    deviceScaleFactor: 1,
-    recordVideo: recordVideoEnabled
-      ? {
-          dir: testDirectories.videoDir,
-          size: { width: 1920, height: 1080 },
-        }
-      : undefined,
-  });
-
-  await use(context);
-  await context.close();
-},
-
+    // console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n` : `Video was not Recorded`);
+  },
 
   // Fixture: Create enhanced page with custom functionality
   page: async ({ context, testDirectories, browserName }, use, testInfo) => {
