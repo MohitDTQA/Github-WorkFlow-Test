@@ -45,7 +45,8 @@ jobs:
 
       # 6️⃣ Run Playwright tests
       - name: Run Playwright tests
-        run: npx playwright test
+        run: xvfb-run -a npx playwright test
+        # run: npx playwright test
         continue-on-error: true
 
       # 7️⃣ Generate Allure HTML report
