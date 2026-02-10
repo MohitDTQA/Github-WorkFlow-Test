@@ -28,8 +28,10 @@ export const test = base.extend<{
       size: { width: 1920, height: 1080 }
     } : undefined;
 
+    const isHeaded = process.env.OPEN_BROWSER === 'true';
     const context = await browser.newContext({
       recordVideo: recordVideo,
+      viewport: isHeaded ? null : { width: 1920, height: 1080 },
       // viewport: {width: 1920, height: 1080}
     });
 
