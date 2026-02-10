@@ -8,7 +8,7 @@ const credsenv = dotenv.config({ path: 'creds.env' });
 
 export { configenv, credsenv };
 export { Page, Locator, BrowserContext, APIRequestContext, APIResponse } from '@playwright/test';
-export { test, expect } from './fixtures/testFixtures';
+export { test, expect } from '@Fixtures/testFixtures';
 export { path };
 export { fs };
 export type { EnhancedPage, TestDirectories } from '@Types/testTypes';
@@ -19,7 +19,7 @@ export { sanitizeTestName } from '@Utils/stringUtils';
 export { createArtifactDirectories } from '@Utils/directoryUtils';
 export { captureScreenshot } from '@Helper/screenShots';
 export { showIntroSplash } from '@Helper/splashScreen';
-export { highlight, createhighLightLocator, createhighLightPage } from './helpers/highlight';
+export { highlight, createhighLightLocator, createhighLightPage } from '@Helper/highlight';
 export { BasePage } from '@BasePage';
 export { useData } from '@TestData/TestData';
 
@@ -34,8 +34,10 @@ const RED = '\x1b[31m';
 const RESET = '\x1b[0m';
 const WHITE = '\x1b[97m';
 
+console.log(`${WHITE}___________________________________________________________`);
+
 test.afterEach(async ({ }, testInfo) => {
-    console.log(`${WHITE}___________________________________________________________`);
+
     const title = testInfo.title;
     const status = testInfo.status;
 
@@ -46,5 +48,7 @@ test.afterEach(async ({ }, testInfo) => {
     } else {
         console.log(`⚠ ${status?.toUpperCase()}: ${title}`);
     }
+
+    console.log(`${WHITE}___________________________________________________________`);
 
 });

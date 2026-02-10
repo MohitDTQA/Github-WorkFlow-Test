@@ -79,14 +79,15 @@ if (selectedProjects.length === 0) {
 const config: PlaywrightTestConfig = defineConfig({
   timeout: parseInt(process.env.TIMEOUT!),
   testDir: `./${process.env.TEST_DIRECTORY}`,
+  outputDir: 'results_reports/test-results',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.PARALLEL_TESTS ? Number(process.env.PARALLEL_TESTS) : undefined,
   // reporter: [['html', { open: 'never' }]],
   reporter: [
-    ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ['allure-playwright', { outputFolder: 'allure-results' }],
+    ['html', { open: 'never', outputFolder: 'results_reports/playwright-report' }],
+    ['allure-playwright', { resultsDir: 'results_reports/allure-results' }],
   ],
 
 

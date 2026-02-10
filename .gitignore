@@ -1,13 +1,10 @@
 
 # Playwright
 node_modules/
-/test-results/
-/playwright-report/
 /playwright/.cache/
 /playwright/.auth/
 !config.env
 !creds.env
 artifacts/
 /auth.json
-/allure-report/
-/allure-results/
+/results_reports

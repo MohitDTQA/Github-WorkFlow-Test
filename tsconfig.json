@@ -14,16 +14,16 @@
       "@Index": ["index.ts"],
 
       "@*": ["Pages/*", "Tests/*"],
-      "@Helper/*": ["helpers/*"],
-      "@Types/*": ["types/*"],
-      "@Utils/*": ["utils/*"],
-      "@Fixtures/*": ["fixtures/*"],
       "@TestData/*": ["test-data/*"],
-      "@api_Helpers/*": ["API_Helpers/*"],
+      "@Helper/*": ["src/helpers/*"],
+      "@Types/*": ["src/types/*"],
+      "@Utils/*": ["src/utils/*"],
+      "@Fixtures/*": ["src/fixtures/*"],
+      "@api_Helpers/*": ["src/API_Helpers/*"],
     },
 
     "types": ["node", "@playwright/test"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "playwright-report", "test-results"]
+  "exclude": ["node_modules", "results_reports/playwright-report", "results_reports/test-results"]
 }
