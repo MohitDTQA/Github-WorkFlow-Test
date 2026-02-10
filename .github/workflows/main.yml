@@ -63,6 +63,14 @@ jobs:
           path: results_reports/test-results/
           retention-days: 30
 
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: artifacts/
+
+
       # 9️⃣ Upload Playwright HTML report
       - name: Upload Playwright report artifact
         if: always()
