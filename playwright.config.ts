@@ -1,8 +1,8 @@
 import { defineConfig, devices, type PlaywrightTestConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: 'config.env' });
-
+dotenv.config({ path: 'config.env', quiet: true, });
+dotenv.config({ path: 'creds.env', quiet: true, });
 
 // 1. Define all available browser projects
 const browserProjects: Record<string, any> = {

@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import test from '@playwright/test';
 
-const configenv = dotenv.config({ path: 'config.env' });
-const credsenv = dotenv.config({ path: 'creds.env' });
+// const configenv = dotenv.config({ path: 'config.env', quiet: true, });
+// const credsenv = dotenv.config({ path: 'creds.env', quiet: true, });
 
-export { configenv, credsenv };
+// export { configenv, credsenv };
 export { Page, Locator, BrowserContext, APIRequestContext, APIResponse } from '@playwright/test';
 export { test, expect } from '@Fixtures/testFixtures';
 export { path };
@@ -48,6 +48,8 @@ test.afterEach(async ({ }, testInfo) => {
     } else {
         console.log(`⚠ ${status?.toUpperCase()}: ${title}`);
     }
+
+    console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved\n` : `\nVideo was not Recorded\n`);
 
     console.log(`${WHITE}___________________________________________________________`);
 

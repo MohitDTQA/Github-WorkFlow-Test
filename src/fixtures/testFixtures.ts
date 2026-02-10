@@ -38,7 +38,7 @@ export const test = base.extend<{
     // Close context - this automatically finalizes and saves all videos
     await context.close();
 
-    console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n` : `Video was not Recorded`);
+    // console.log(process.env.RECORD_VIDEO === 'on' ? `\n📹 Videos saved to: ${testDirectories.videoDir}\n` : `Video was not Recorded`);
   },
 
   // Fixture: Create enhanced page with custom functionality
