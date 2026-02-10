@@ -10,6 +10,7 @@ _.test.describe('Status Code @ui', async () => {
         await statusCode.ClickstatusCodeLink();
         await statusCode.ClickCode200Text();
         await statusCode.GetStatusCode(200);
+        await page.captureScreenshot("Test Screenshot");
         await page.goBack();
         await statusCode.ClickCode301Text();
         await statusCode.GetStatusCode(300);
